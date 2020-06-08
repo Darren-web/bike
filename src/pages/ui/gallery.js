@@ -31,7 +31,7 @@ class Gallery extends Component {
         return (
             <div className="card-wrap">
                 <Row gutter={10}>
-                    <Col md={6}>{imgList[0]}</Col>
+                    <Col span={6}>{imgList[0]}</Col>
                     <Col md={6}>{imgList[1]}</Col>
                     <Col md={6}>{imgList[2]}</Col>
                     <Col md={6}>{imgList[3]}</Col>

@@ -13,7 +13,10 @@ import Message from './pages/ui/message';
 import Tab from './pages/ui/tabs';
 import Gallery from './pages/ui/gallery';
 import Carousels from './pages/ui/carousel';
-import FormLogin from './pages/form';
+import FormLogin from './pages/form/login';
+import Register from './pages/form/register';
+import BasicTable from './pages/table/basicTable';
+import HighTable from './pages/table/highTable';
 
 
 class Router extends Component {
@@ -35,6 +38,9 @@ class Router extends Component {
                                 <Route path="/ui/gallery" component={Gallery}/>
                                 <Route path="/ui/carousel" component={Carousels}/>
                                 <Route path="/form/login" component={FormLogin}/>
+                                <Route path="/form/reg" component={Register}/>
+                                <Route path="/table/basic" component={BasicTable}/>
+                                <Route path="/table/high" component={HighTable}/>
                                 <Route component={NoMatch}/>
                             </Switch>
                             </Admin>}
