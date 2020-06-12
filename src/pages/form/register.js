@@ -224,7 +224,7 @@ class Register extends Component {
                         <FormItem {...offsetLayout}>
                             {
                                 getFieldDecorator("xiyi")(
-                                    <Checkbox>我已阅读<a href="javascript:">XXX协议</a></Checkbox>
+                                    <Checkbox>我已阅读<Button type="link">XXX协议</Button></Checkbox>
                                 )
                             }
                         </FormItem>

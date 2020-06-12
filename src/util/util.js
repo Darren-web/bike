@@ -11,7 +11,7 @@ export default {
             onChange:(current)=>{
                 callback(current)
             },
-            current:data.result.page_size,
+            current:data.result.page,
             total:data.result.total,
             showTotal:()=>{
                 return `共${data.result.total}条`
