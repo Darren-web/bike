@@ -8,7 +8,7 @@ class Common extends Component {
         return (
             <div>
                 <Row className="simple-page">
-                    <Header memuType="second"/>
+                    <Header menuType="second"/>
                 </Row>
                 <Row className="content">
                     {this.props.children}

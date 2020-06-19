@@ -33,14 +33,15 @@ class Header extends Component {
         })
     }
     render() {
-        const menuType = this.props.menuType;
+        const { menuType } = this.props;
         return (
             <div className="header">
                 <Row className="header-top">
                     {
                         menuType ? 
-                        <Col span={6}>
+                        <Col span={6} className="logo">
                             <img src="/assets/logo-ant.svg" alt="" />
+                            <h1>Hello BIKE</h1>
                         </Col>:""
                     }
                     <Col span={menuType?18:24}>
