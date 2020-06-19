@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card,Button, message, Tabs,Icon } from 'antd'
+import { Card, message, Tabs,Icon } from 'antd'
 import './ui.less'
 
 class Tab extends Component {

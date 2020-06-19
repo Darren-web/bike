@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, Table, Modal, Badge, message } from 'antd'
+import { Card, Table, Modal, Badge, message, Button } from 'antd'
 import axios from 'axios'
 import "./../../mock/api"
 
@@ -24,9 +24,10 @@ class HighTable extends Component {
                 loading = document.getElementById('ajaxLoading');
                 loading.style.display = 'none';
             }
-            if(res.status == "200" && res.data.code == 0){
+            if(res.status === 200 && res.data.code === 0){
                 res.data.result.list.map((item,index)=>{
                     item.key = index
+                    return ""
                 })
                 console.log('res', res)
                 this.setState({
@@ -51,7 +52,7 @@ class HighTable extends Component {
         })
     }
     handleDelete=(item)=>{
-        let id = item.id;
+        // let id = item.id;
         Modal.confirm({
             title:'确认',
             content:"确认删除此条数据吗",
@@ -77,7 +78,7 @@ class HighTable extends Component {
                 title:"性别",
                 dataIndex:"sex",
                 render(sex){
-                    return sex == 1 ? "男":"女"
+                    return sex === 1 ? "男":"女"
                 },
                 width:80
             },
@@ -144,7 +145,7 @@ class HighTable extends Component {
                 title:"性别",
                 dataIndex:"sex",
                 render(sex){
-                    return sex == 1 ? "男":"女"
+                    return sex === 1 ? "男":"女"
                 },
                 width:80
             },
@@ -223,7 +224,7 @@ class HighTable extends Component {
                 title:"性别",
                 dataIndex:"sex",
                 render(sex){
-                    return sex == 1 ? "男":"女"
+                    return sex === 1 ? "男":"女"
                 },
             },
             {
@@ -288,7 +289,7 @@ class HighTable extends Component {
                 title:"性别",
                 dataIndex:"sex",
                 render(sex){
-                    return sex == 1 ? "男":"女"
+                    return sex === 1 ? "男":"女"
                 },
             },
             {
@@ -334,7 +335,7 @@ class HighTable extends Component {
             {
                 title:"操作",
                 render:(text,item)=>{
-                    return <a href="javascript:" onClick={(item)=>{this.handleDelete(item)}}>删除</a>
+                    return <Button type="link" href="#" onClick={(item)=>{this.handleDelete(item)}}>删除</Button>
                 }
             },
         ]

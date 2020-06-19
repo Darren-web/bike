@@ -21,7 +21,7 @@ class Order extends Component {
         axios.get(baseUrl+"/list",{
             page:this.params.page
         }).then((res)=>{
-            if(res.status == "200" && res.data.code == 0){
+            if(res.status === 200 && res.data.code === 0){
                 this.setState({
                     list:res.data.result.item_list.map((item,index)=>{
                         item.key = index;
@@ -57,7 +57,7 @@ class Order extends Component {
             }
         })
         .then((res)=>{
-            if(res.status == "200" && res.data.code == 0){
+            if(res.status === 200 && res.data.code === 0){
                 this.setState({
                     orderInfo:res.data.result,
                     orderConfirmVisible:true
@@ -71,7 +71,7 @@ class Order extends Component {
         
         axios.get("http://localhost:3000/#/order/finish_order")
         .then((res)=>{
-            if(res.status == "200" && res.data.code == 0){
+            if(res.status === 200 && res.data.code === 0){
                 message.success("订单结束成功");
                 this.setState({
                     orderConfirmVisible:false
@@ -86,6 +86,17 @@ class Order extends Component {
             selectedRowKeys:selectKey,
             selectItem:record
         })
+    }
+    openOrderDetail = () => {
+        let item = this.state.selectItem;
+        if(!item){
+            Modal.info({
+                title:"提示信息",
+                content:"请选择一条订单"
+            })
+            return;
+        }
+        window.open(`/#/common/order/detail/${item.id}`,'_blank')
     }
     render() {
         const columns = [
@@ -148,7 +159,7 @@ class Order extends Component {
                     <FilterForm/>
                 </Card>
                 <Card style={{marginTop:10}}>
-                    <Button type="primary">订单详情</Button>
+                    <Button type="primary" onClick={this.openOrderDetail}>订单详情</Button>
                     <Button type="primary" style={{marginLeft:10}} onClick={this.handleConfirm}>结束订单</Button>
                 </Card>
                 <div className="content_wrap">
@@ -157,9 +168,6 @@ class Order extends Component {
                         columns={columns}
                         dataSource={this.state.list}
                         pagination={this.state.pagination}
-                        rowSelection={{
-                            type:"radio"
-                        }}
                         rowSelection={{type:"radio",selectedRowKeys}}
                         onRow={(record,index) => {
                             return {

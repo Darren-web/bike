@@ -23,7 +23,7 @@ class City extends Component {
         axios.get("http://localhost:3000/#/city/open",{
             param:cityInfo
         }).then((res)=>{
-            if(res.data.code == '0'){
+            if(res.data.code === 0){
                 message.success("开通成功")
                 this.setState({
                     isShowOpenCity:false
@@ -49,7 +49,7 @@ class City extends Component {
                 loading.style.display = 'none';
             }
             console.log('res', res)
-            if(res.status == "200" && res.data.code == 0){
+            if(res.status === 200 && res.data.code === 0){
                 this.setState({
                     list:res.data.result.item_list.map((item,index)=>{
                         item.key = index;
@@ -87,14 +87,14 @@ class City extends Component {
                 dataIndex:'mode',
                 render(mode){
                     console.log('mode', mode)
-                    return mode == 1?"停车点":"禁停区"
+                    return mode === 1?"停车点":"禁停区"
                 }
             },
             {
                 title:'运营模式',
                 dataIndex:'op_mode',
                 render(op_mode){
-                    return op_mode == 1?"自营":"加盟"
+                    return op_mode === 1?"自营":"加盟"
                 }
             },
             {

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Card, Table, Modal, Button, message } from 'antd'
 import axios from 'axios'
-import "./../../mock/api"
 import util from '../../util/util';
 
 class BasicTable extends Component {
@@ -47,6 +46,7 @@ class BasicTable extends Component {
         ]
         data.map((item,index)=>{
             item.key = index
+            return ""
         })
         this.setState({
             dataSource:data
@@ -70,11 +70,11 @@ class BasicTable extends Component {
                 loading = document.getElementById('ajaxLoading');
                 loading.style.display = 'none';
             }
-            if(res.status == "200" && res.data.code == 0){
+            if(res.status === 200 && res.data.code === 0){
                 res.data.result.list.map((item,index)=>{
                     item.key = index
+                    return ""
                 })
-                console.log('res', res)
                 this.setState({
                     dataSource2:res.data.result.list,
                     selectedRowKeys:[],
@@ -108,6 +108,7 @@ class BasicTable extends Component {
         let ids = [];
         rows.map((item=>{
             ids.push(item.id)
+            return ""
         }))
         Modal.confirm({
             title:"删除提示",
@@ -132,7 +133,7 @@ class BasicTable extends Component {
                 title:"性别",
                 dataIndex:"sex",
                 render(sex){
-                    return sex == 1 ? "男":"女"
+                    return sex === 1 ? "男":"女"
                 }
             },
             {
