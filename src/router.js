@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { HashRouter,Route,Switch } from 'react-router-dom'
+import { HashRouter,Route,Switch, Redirect } from 'react-router-dom'
 import App from './App'
 import Login from './pages/login'
 import Admin from './admin'
@@ -52,6 +52,7 @@ class Router extends Component {
                                 <Route path="/table/high" component={HighTable}/>
                                 <Route path="/city" component={City}/>
                                 <Route path="/order" component={Order}/>
+                                {/* <Redirect from="/" to="/home"/> */}
                                 <Route component={NoMatch}/>
                             </Switch>
                             </Admin>}

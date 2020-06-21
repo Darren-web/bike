@@ -52,9 +52,7 @@ class Order extends Component {
             return;
         }
         axios.get("http://localhost:3000/#/order/ebike_info",{
-            params:{
                 orderId:item.id
-            }
         })
         .then((res)=>{
             if(res.status === 200 && res.data.code === 0){
