@@ -3,6 +3,7 @@ import { Card, Form, Select, Table, Button, DatePicker, Modal, message } from 'a
 import axios from 'axios';
 import util from './../../util/util';
 import BaseForm from './../../components/BaseForm'
+import ETable from './../../components/ETable'
 
 const FormItem = Form.Item
 class Order extends Component {
@@ -73,7 +74,7 @@ class Order extends Component {
     }
     //订单结束确认
     handleConfirm = ()=>{
-        let item = this.state.selectItem;
+        let item = this.state.selectedItem;
         if(!item){
             Modal.info({
                 title:"提示信息",
@@ -108,15 +109,8 @@ class Order extends Component {
             }
         })
     }
-    onRowClick = (record,index) => {
-        let selectKey = [index];
-        this.setState({
-            selectedRowKeys:selectKey,
-            selectItem:record
-        })
-    }
     openOrderDetail = () => {
-        let item = this.state.selectItem;
+        let item = this.state.selectedItem;
         if(!item){
             Modal.info({
                 title:"提示信息",
@@ -180,7 +174,6 @@ class Order extends Component {
             labelCol:{span:5},
             wrapperCol:{span:19}
         }
-        let {selectedRowKeys} = this.state
         return (
             <div>
                 <Card>
@@ -191,19 +184,15 @@ class Order extends Component {
                     <Button type="primary" style={{marginLeft:10}} onClick={this.handleConfirm}>结束订单</Button>
                 </Card>
                 <div className="content_wrap">
-                    <Table
-                        bordered
+                    <ETable
+                        updateSelectedItem ={util.updateSelectedItem.bind(this)}
                         columns={columns}
                         dataSource={this.state.list}
+                        selectedRowKeys={this.state.selectedRowKeys}
+                        selectedItem={this.state.selectedItem}
+                        selectedIds={this.state.selectedIds}
                         pagination={this.state.pagination}
-                        rowSelection={{type:"radio",selectedRowKeys}}
-                        onRow={(record,index) => {
-                            return {
-                                onClick: () => {
-                                    this.onRowClick(record,index)
-                                }
-                            };
-                        }}
+                        rowSelection=""
                     />
                 </div>
                 <Modal 

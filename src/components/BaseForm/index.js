@@ -17,7 +17,6 @@ class FilterForm extends Component {
         const { getFieldDecorator } = this.props.form
         const formList = this.props.formList
         const formItemList = []
-        console.log('formList', formList)
         if (formList && formList.length > 0) {
             formList.forEach((item,index)=>{
                 let label = item.label;
@@ -86,7 +85,6 @@ class FilterForm extends Component {
                 }
             })
         }
-        console.log('formItemList', formItemList)
         return formItemList
     }
     render() {

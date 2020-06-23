@@ -98,10 +98,10 @@ Mock.mock(url.order1, function () {
             "total_count": 85,
             "page_count": 9,
             "item_list|10": [{
-                "id": 2959165,
+                "id|+1": 2959165,
                 order_sn: /T180[0-9]{6}/,
-                bike_sn: "800116090",
-                user_id: 908352,
+                bike_sn: /B[0-9]{6}/,
+                "user_id|+1": 908352,
                 user_name: "@cname",
                 mobile: /1[0-9]{10}/,
                 distance: 2000,
