@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Form, Card, Select,Button, Table, Modal, message } from 'antd';
-import axios from 'axios'
+import Axios from './../../axios'
 import util from './../../util/util'
 
 class City extends Component {
@@ -20,53 +20,45 @@ class City extends Component {
     //城市开通提交
     handleSubmit = () => {
         let cityInfo = this.cityForm.props.form.getFieldsValue();
-        axios.get("http://localhost:3000/#/city/open",{
-            param:cityInfo
-        }).then((res)=>{
-            if(res.data.code === 0){
-                message.success("开通成功")
-                this.setState({
-                    isShowOpenCity:false
-                })
-                this.request()
+        Axios.ajax({
+            url:"/city/open",
+            data:{
+                params:{
+                    cityInfo:this.cityInfo,
+                    page:this.params.age
+                }
             }
+        })
+        .then((res)=>{
+            message.success("开通成功")
+            this.setState({
+                isShowOpenCity:false
+            })
+            this.request()
         })
     }
     request = () => {
         let _this = this;
-        let baseUrl = 'http://localhost:3000/#/city';
-        let loading;
-        if (this.state.isShowLoading !== false){
-            loading = document.getElementById('ajaxLoading');
-            loading.style.display = 'block';
-        }
-
-        axios.get(baseUrl+"/open_city",{
-            page:this.params.page
-        }).then((res)=>{
-            if (this.state.isShowLoading !== false) {
-                loading = document.getElementById('ajaxLoading');
-                loading.style.display = 'none';
+        Axios.ajax({
+            url:"/city/open_city",
+            data:{
+                params:{
+                    page:this.params.page
+                }
             }
+        })
+        .then((res)=>{
             console.log('res', res)
-            if(res.status === 200 && res.data.code === 0){
                 this.setState({
-                    list:res.data.result.item_list.map((item,index)=>{
+                    list:res.result.item_list.map((item,index)=>{
                         item.key = index;
                         return item;
                     }),
-                    pagination:util.pagination(res.data,(current)=>{
+                    pagination:util.pagination(res,(current)=>{
                         _this.params.page = current;
                         this.request();
                     })
                 })
-            }else{
-                Modal.info({
-                    title:"提示",
-                    content:res.data.msg
-                })
-            }
-            
         })
     }
     componentDidMount(){

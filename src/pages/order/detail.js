@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Card } from 'antd';
-import axios from 'axios';
+import Axios from './../../axios'
 import './detail.less'
 
 export default class OrderDetail extends Component {
@@ -12,17 +12,20 @@ export default class OrderDetail extends Component {
         }
     }
     getDetailInfo = (orderId) => {
-        axios.get("http://localhost:3000/#/detailInfo",{
-            orderId:orderId
+        Axios.ajax({
+            url:"/detailInfo",
+            data:{
+                params:{
+                    orderId:orderId
+                }
+            }
         })
         .then((res)=>{
-            let data = res.data
-            if(data.code === "0") {
-                this.setState({
-                    orderInfo:data.result
-                })
-                this.renderMap(data.result)
-            }
+            let data = res
+            this.setState({
+                orderInfo:data.result
+            })
+            this.renderMap(data.result)
         })
     }
     renderMap = (result) => {

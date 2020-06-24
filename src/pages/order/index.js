@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Card, Form, Select, Table, Button, DatePicker, Modal, message } from 'antd';
-import axios from 'axios';
+import { Card, Form, Button, Modal, message } from 'antd';
+import Axios from './../../axios';
 import util from './../../util/util';
 import BaseForm from './../../components/BaseForm'
 import ETable from './../../components/ETable'
@@ -47,29 +47,25 @@ class Order extends Component {
     }
     request = () => {
         let _this = this;
-        let baseUrl = 'http://localhost:3000/#/order';
-
-        axios.get(baseUrl+"/list",{
-            data:this.params
-        }).then((res)=>{
-            if(res.status === 200 && res.data.code === 0){
-                this.setState({
-                    list:res.data.result.item_list.map((item,index)=>{
-                        item.key = index;
-                        return item;
-                    }),
-                    pagination:util.pagination(res.data,(current)=>{
-                        _this.params.page = current;
-                        this.request();
-                    })
-                })
-            }else{
-                Modal.info({
-                    title:"提示",
-                    content:res.data.msg
-                })
+        Axios.ajax({
+            url:"/order/list",
+            data:{
+                params:{
+                    page:this.params.page
+                }
             }
-            
+        })
+        .then((res)=>{
+            this.setState({
+                list:res.result.item_list.map((item,index)=>{
+                    item.key = index;
+                    return item;
+                }),
+                pagination:util.pagination(res,(current)=>{
+                    _this.params.page = current;
+                    this.request();
+                })
+            })
         })
     }
     //订单结束确认
@@ -82,31 +78,34 @@ class Order extends Component {
             })
             return;
         }
-        axios.get("http://localhost:3000/#/order/ebike_info",{
-                orderId:item.id
+
+        Axios.ajax({
+            url:"/ebike_info",
+            data:{
+                param:{
+                    orderId:item.id
+                }
+            }
         })
         .then((res)=>{
-            if(res.status === 200 && res.data.code === 0){
-                this.setState({
-                    orderInfo:res.data.result,
-                    orderConfirmVisible:true
-                })
-            }
+            this.setState({
+                orderInfo:res.result,
+                orderConfirmVisible:true
+            })
         })
         
     }
     //结束订单
     handleFinishOrder = ()=>{
-        
-        axios.get("http://localhost:3000/#/order/finish_order")
+        Axios.ajax({
+            url:"/order/finish_order"
+        })
         .then((res)=>{
-            if(res.status === 200 && res.data.code === 0){
-                message.success("订单结束成功");
-                this.setState({
-                    orderConfirmVisible:false
-                })
-                this.request();
-            }
+            message.success("订单结束成功");
+            this.setState({
+                orderConfirmVisible:false
+            })
+            this.request();
         })
     }
     openOrderDetail = () => {

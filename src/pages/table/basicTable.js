@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Card, Table, Modal, Button, message } from 'antd'
-import axios from 'axios'
+import Axios from './../../axios/index'
 import util from '../../util/util';
 
 class BasicTable extends Component {
@@ -56,38 +56,26 @@ class BasicTable extends Component {
     //动态获取mock数据
     request = () => {
         let _this = this;
-        let baseUrl = 'http://localhost:3000/#/table/basic';
-        let loading;
-        if (this.state.isShowLoading !== false){
-            loading = document.getElementById('ajaxLoading');
-            loading.style.display = 'block';
-        }
-
-        axios.get(baseUrl+"/dataSource2",{
-            page:this.params.page
-        }).then((res)=>{
-            if (this.state.isShowLoading !== false) {
-                loading = document.getElementById('ajaxLoading');
-                loading.style.display = 'none';
+        Axios.ajax({
+            url:"/table/basic/dataSource2",
+            data:{
+                params:{page:this.params.page}
             }
-            if(res.status === 200 && res.data.code === 0){
-                res.data.result.list.map((item,index)=>{
+        }).
+        then((res)=>{
+            if( res.code === 0 ) {
+                res.result.list.map((item,index)=>{
                     item.key = index
                     return ""
                 })
                 this.setState({
-                    dataSource2:res.data.result.list,
+                    dataSource2:res.result.list,
                     selectedRowKeys:[],
                     selectedRows:null,
-                    pagination:util.pagination(res.data,(current)=>{
+                    pagination:util.pagination(res,(current)=>{
                         _this.params.page = current;
                         this.request();
                     })
-                })
-            }else{
-                Modal.info({
-                    title:"提示",
-                    content:res.data.msg
                 })
             }
         })

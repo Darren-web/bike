@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Card, Table, Modal, Badge, message, Button } from 'antd'
-import axios from 'axios'
+import Axios from './../../axios/index'
 import "./../../mock/api"
 
 class HighTable extends Component {
@@ -12,33 +12,30 @@ class HighTable extends Component {
         page:1
     }
     request = () => {
-        let baseUrl = 'http://localhost:3000/#/table/high';
-        let loading;
-        if (this.state.isShowLoading !== false){
-            loading = document.getElementById('ajaxLoading');
-            loading.style.display = 'block';
-        }
+        // let baseUrl = 'https://www.fastmock.site/mock/f33220cda0f9b989fe7e01d14bd4f8a0/bike/table/high';
+        // let loading;
+        // if (this.state.isShowLoading !== false){
+        //     loading = document.getElementById('ajaxLoading');
+        //     loading.style.display = 'block';
+        // }
 
-        axios.get(baseUrl+"/dataSource3").then((res)=>{
-            if (this.state.isShowLoading !== false) {
-                loading = document.getElementById('ajaxLoading');
-                loading.style.display = 'none';
+        // axios.get(baseUrl+"/dataSource3").
+        Axios.ajax({
+            url:"/table/high/dataSource3",
+            params:{
+                page:this.params.page
             }
-            if(res.status === 200 && res.data.code === 0){
-                res.data.result.list.map((item,index)=>{
+        }).
+        then((res)=>{
+            if(res.code === 0){
+                res.result.list.map((item,index)=>{
                     item.key = index
                     return ""
                 })
-                console.log('res', res)
                 this.setState({
-                    dataSource2:res.data.result.list,
+                    dataSource2:res.result.list,
                     selectedRowKeys:[],
                     selectedRows:null,
-                })
-            }else{
-                Modal.info({
-                    title:"提示",
-                    content:res.data.msg
                 })
             }
         })
@@ -182,21 +179,6 @@ class HighTable extends Component {
             {
                 title:"生日",
                 dataIndex:"birthday",
-                width:120
-            },
-            {
-                title:"地址",
-                dataIndex:"address",
-                width:120
-            },
-            {
-                title:"地址",
-                dataIndex:"address",
-                width:120
-            },
-            {
-                title:"地址",
-                dataIndex:"address",
                 width:120
             },
             {

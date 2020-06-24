@@ -21,6 +21,7 @@ import City from './pages/city';
 import Order from './pages/order';
 import Common from './common';
 import OrderDetail from './pages/order/detail'
+import User from './pages/user';
 
 
 class Router extends Component {
@@ -52,6 +53,7 @@ class Router extends Component {
                                 <Route path="/table/high" component={HighTable}/>
                                 <Route path="/city" component={City}/>
                                 <Route path="/order" component={Order}/>
+                                <Route path="/user" component={User}/>
                                 {/* <Redirect from="/" to="/home"/> */}
                                 <Route component={NoMatch}/>
                             </Switch>
