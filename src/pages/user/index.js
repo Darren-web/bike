@@ -1,9 +1,10 @@
+import { Button, Card, DatePicker, Form, Input, Modal, Radio, Select, message } from 'antd';
+import moment from 'moment';
 import React, { Component } from 'react';
-import { Card, Button, Modal, Form, Input, Radio, DatePicker, Select,  } from 'antd'
-import axios from 'axios'
-import util from './../../util/util'
-import ETable from './../../components/ETable'
-import BaseForm from './../../components/BaseForm'
+import Axios from './../../axios';
+import BaseForm from './../../components/BaseForm';
+import ETable from './../../components/ETable';
+import util from './../../util/util';
 
 const FormItem = Form.Item
 const RadioGroup = Radio.Group
@@ -44,40 +45,114 @@ class User extends Component {
     }
     request = () => {
         let _this = this;
-        let baseUrl = 'https://www.fastmock.site/mock/f33220cda0f9b989fe7e01d14bd4f8a0/bike';
-
-        axios.get(baseUrl+"/userList",{
-            params:{data:this.params}
-        }).then((res)=>{
-            if(res.status === 200 && res.data.code === 0){
+        Axios.ajax({
+            url:"/userList",
+            params: {
+                data:this.params
+            }
+        })
+        .then((res)=>{
+            if(res.code === 0){
                 this.setState({
-                    list:res.data.result.item_list.map((item,index)=>{
+                    list:res.result.item_list.map((item,index)=>{
                         item.key = index;
                         return item;
                     }),
-                    pagination:util.pagination(res.data,(current)=>{
+                    pagination:util.pagination(res,(current)=>{
                         _this.params.page = current;
                         this.request();
                     })
-                })
-            }else{
-                Modal.info({
-                    title:"提示",
-                    content:res.data.msg
                 })
             }
         })
     }
     //创建员工提交
     handleSubmit = () => {
-
+        let type = this.state.type
+        let data = this.UserForm.props.form.getFieldsValue()
+        Axios.ajax({
+            url:type ==="create" ? "/user/add" :"/user/edit",
+            data:{
+                params:data
+            }
+        })
+        .then((res)=>{
+            if(res.code === 0){
+                this.UserForm.props.form.resetFields()
+                this.setState({
+                    isVisible: false
+                })
+                this.request()
+            }
+        })
     }
     handleOperate = (type) => {
+        let item = this.state.selectedItem
         if(type === "create"){
             this.setState({
                 type,
                 isVisible:true,
                 title:"创建员工"
+            })
+        } else if(type === "edit") {
+            if(!item){
+                Modal.info({
+                    title:"提示",
+                    content:"请选择一个用户"
+                })
+                return;
+            }
+            this.setState({
+                type,
+                isVisible:true,
+                title:"编辑员工",
+                userInfo:item
+            })
+        } else if(type === "detail") {
+            if(!item){
+                Modal.info({
+                    title:"提示",
+                    content:"请选择一个用户"
+                })
+                return;
+            }
+            this.setState({
+                type,
+                isVisible:true,
+                userInfo:item,
+                title:"员工详情"
+            })
+        }else{
+            if(!item){
+                Modal.info({
+                    title:"提示",
+                    content:"请选择一个用户"
+                })
+                return;
+            }
+            let _this = this
+            Modal.confirm({
+                title:"确认删除",
+                content:"是否删除当前选中的员工",
+                onOk(){
+                    Axios.ajax({
+                        url:"/user/delete",
+                        data:{
+                            params:{
+                                id:item.id
+                            }
+                        }
+                    })
+                    .then((res)=>{
+                        if(res.code === 0){
+                            _this.setState({
+                                isVisible:false
+                            })
+                            message.success("删除成功")
+                            _this.request()
+                        }
+                    })
+                }
             })
         }
     }
@@ -139,6 +214,12 @@ class User extends Component {
                 dataIndex:"time"
             }
         ]
+        let footer = {}
+        if(this.state.type === "detail") {
+            footer = {
+                footer:null
+            }
+        }
         return (
             <div>
                 <Card>
@@ -166,14 +247,17 @@ class User extends Component {
                     visible={this.state.isVisible}
                     onOk={this.handleSubmit}
                     onCancel={()=>{
+                        this.UserForm.props.form.resetFields()
                         this.setState({
                             isVisible:false
                         })
                     }}
                     width={600}
+                    {...footer}
                 >
                     <UserForm 
                         type={this.state.type}
+                        userInfo={this.state.userInfo}
                         wrappedComponentRef={(inst)=>{this.UserForm = inst}}
                     />
                 </Modal>
@@ -186,7 +270,18 @@ class User extends Component {
 }
 
 class UserForm extends Component {
+    getState = (state) => {
+        return {
+            "1":"咸鱼一条",
+            "2":"风华浪子",
+            "3":"北大才子",
+            "4":"前端FE",
+            "5":"创业者"
+        }[state]
+    }
     render() {
+        let type = this.props.type
+        let userInfo = this.props.userInfo || {}
         const { getFieldDecorator } = this.props.form
         const formItemLayout = {
             labelCol:{span:5},
@@ -196,41 +291,59 @@ class UserForm extends Component {
             <Form layout="horizontal">
                 <FormItem label="用户名" {...formItemLayout}>
                     {
-                        getFieldDecorator("user_name")(
+                        type === "detail" ? userInfo.user_name :
+                        getFieldDecorator("user_name",{
+                            initialValue:userInfo.user_name
+                        })(
                             <Input type="text" placeholder="请输入用户名"/>
                         )
                     }
                 </FormItem>
                 <FormItem label="性别" {...formItemLayout}>
                     {
-                        getFieldDecorator("sex")(
+                        type === "detail" ? userInfo.sex === 1 ? "男":"女" :
+                        getFieldDecorator("sex",{
+                            initialValue:userInfo.sex
+                        })(
                             <RadioGroup>
                                 <Radio value={1}>男</Radio>
-                                <Radio value={2}>女</Radio>
+                                <Radio value={0}>女</Radio>
                             </RadioGroup>
                         )
                     }
                 </FormItem>
                 <FormItem label="状态" {...formItemLayout}>
                     {
-                        getFieldDecorator("state")(
+                        type === "detail" ? this.getState(userInfo.state) :
+                        getFieldDecorator("state",{
+                            initialValue:userInfo.state
+                        })(
                             <Select>
                                 <Option value={1}>咸鱼一条</Option>
-                                <Option value={2}>百度FE</Option>
+                                <Option value={2}>风华浪子</Option>
+                                <Option value={3}>北大才子</Option>
+                                <Option value={4}>前端FE</Option>
+                                <Option value={5}>创业者</Option>
                             </Select>
                         )
                     }
                 </FormItem>
                 <FormItem label="生日" {...formItemLayout}>
                     {
-                        getFieldDecorator("birthday")(
+                        type === "detail" ? userInfo.birthday :
+                        getFieldDecorator("birthday",{
+                            initialValue:moment(userInfo.birthday)
+                        })(
                             <DatePicker />
                         )
                     }
                 </FormItem>
                 <FormItem label="联系地址" {...formItemLayout}>
                     {
-                        getFieldDecorator("address")(
+                        type === "detail" ? userInfo.address :
+                        getFieldDecorator("address",{
+                            initialValue:userInfo.address
+                        })(
                             <TextArea rows={3} placeholder="请输入联系地址"></TextArea>
                         )
                     }

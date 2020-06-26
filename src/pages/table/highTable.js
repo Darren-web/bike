@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Card, Table, Modal, Badge, message, Button } from 'antd'
 import Axios from './../../axios/index'
-import "./../../mock/api"
 
 class HighTable extends Component {
     state={

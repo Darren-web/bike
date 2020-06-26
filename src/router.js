@@ -1,26 +1,29 @@
 import React, { Component } from 'react';
-import { HashRouter,Route,Switch, Redirect } from 'react-router-dom'
-import App from './App'
-import Login from './pages/login'
-import Admin from './admin'
-import Home from './pages/home'
-import Buttons from './pages/ui/button'
-import Modals from './pages/ui/modals'
-import Loadings from './pages/ui/loading'
-import Notice from './pages/ui/notice'
-import NoMatch from './pages/nomatch'
-import Message from './pages/ui/message';
-import Tab from './pages/ui/tabs';
-import Gallery from './pages/ui/gallery';
-import Carousels from './pages/ui/carousel';
+import { HashRouter, Route, Switch } from 'react-router-dom';
+import Admin from './admin';
+import App from './App';
+import Common from './common';
+import City from './pages/city';
+import Bar from './pages/echarts/bar';
 import FormLogin from './pages/form/login';
 import Register from './pages/form/register';
+import Home from './pages/home';
+import Login from './pages/login';
+import BikeMap from './pages/map/bikeMap';
+import NoMatch from './pages/nomatch';
+import Order from './pages/order';
+import OrderDetail from './pages/order/detail';
+import RichText from './pages/rich';
 import BasicTable from './pages/table/basicTable';
 import HighTable from './pages/table/highTable';
-import City from './pages/city';
-import Order from './pages/order';
-import Common from './common';
-import OrderDetail from './pages/order/detail'
+import Buttons from './pages/ui/button';
+import Carousels from './pages/ui/carousel';
+import Gallery from './pages/ui/gallery';
+import Loadings from './pages/ui/loading';
+import Message from './pages/ui/message';
+import Modals from './pages/ui/modals';
+import Notice from './pages/ui/notice';
+import Tab from './pages/ui/tabs';
 import User from './pages/user';
 
 
@@ -54,6 +57,9 @@ class Router extends Component {
                                 <Route path="/city" component={City}/>
                                 <Route path="/order" component={Order}/>
                                 <Route path="/user" component={User}/>
+                                <Route path="/bikeMap" component={BikeMap}/>
+                                <Route path="/charts/bar" component={Bar}/>
+                                <Route path="/rich" component={RichText}/>
                                 {/* <Redirect from="/" to="/home"/> */}
                                 <Route component={NoMatch}/>
                             </Switch>

@@ -92,6 +92,21 @@ class FilterForm extends Component {
                         }
                     </FormItem>
                     formItemList.push(Date)
+                }else if(item.type === '城市'){
+                    const City = <FormItem label="城市" key="城市">
+                        {
+                            getFieldDecorator("city",{
+                                initialValue: "0"
+                            })(
+                                <Select
+                                    style={{width:width}}
+                                >
+                                    {util.getOptionList([{id:"0",name:"北京"},{id:"1",name:"上海"},{id:"2",name:"天津"},{id:"3",name:"杭州"},])}
+                                </Select>
+                            )
+                        }
+                    </FormItem>
+                    formItemList.push(City)
                 }
             })
         }

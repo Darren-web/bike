@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import util from './../../util/util'
+// import util from './../../util/util'
 import { Table } from 'antd'
 
 class ETable extends Component {
