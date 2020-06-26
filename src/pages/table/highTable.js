@@ -12,14 +12,6 @@ class HighTable extends Component {
         page:1
     }
     request = () => {
-        // let baseUrl = 'https://www.fastmock.site/mock/f33220cda0f9b989fe7e01d14bd4f8a0/bike/table/high';
-        // let loading;
-        // if (this.state.isShowLoading !== false){
-        //     loading = document.getElementById('ajaxLoading');
-        //     loading.style.display = 'block';
-        // }
-
-        // axios.get(baseUrl+"/dataSource3").
         Axios.ajax({
             url:"/table/high/dataSource3",
             params:{
