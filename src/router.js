@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { HashRouter, Route, Switch } from 'react-router-dom';
+import { HashRouter, Route, Switch, Redirect } from 'react-router-dom';
 import Admin from './admin';
 import App from './App';
 import Common from './common';
@@ -25,6 +25,7 @@ import Modals from './pages/ui/modals';
 import Notice from './pages/ui/notice';
 import Tab from './pages/ui/tabs';
 import User from './pages/user';
+import PermissionUser from './pages/permission';
 
 
 class Router extends Component {
@@ -60,12 +61,12 @@ class Router extends Component {
                                 <Route path="/bikeMap" component={BikeMap}/>
                                 <Route path="/charts/bar" component={Bar}/>
                                 <Route path="/rich" component={RichText}/>
-                                {/* <Redirect from="/" to="/home"/> */}
-                                <Route component={NoMatch}/>
+                                <Route path="/permission" component={PermissionUser}/>
+                                <Redirect from="/" to="/home"/>
                             </Switch>
                             </Admin>}
                         />
-                        
+                        <Route component={NoMatch}/>
                     </Switch>
                 </App>
             </HashRouter>

@@ -48,7 +48,6 @@ class City extends Component {
             }
         })
         .then((res)=>{
-            console.log('res', res)
                 this.setState({
                     list:res.result.item_list.map((item,index)=>{
                         item.key = index;
@@ -78,7 +77,6 @@ class City extends Component {
                 title:'用车模式',
                 dataIndex:'mode',
                 render(mode){
-                    console.log('mode', mode)
                     return mode === 1?"停车点":"禁停区"
                 }
             },
